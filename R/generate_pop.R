@@ -1,5 +1,18 @@
 #growth functions
 
+#' Generates an imaginary population
+#'
+#' @param n integer
+#'
+#' @return data frame
+#' @export
+#'
+#' @examples
+
+
+
+
+
 generate_pop <- function(n){
 
   # nから年齢×年齢別体長へ割り振り
@@ -52,3 +65,14 @@ generate_pop <- function(n){
 #lage <- ceiling(n/nage)
 #totnum <- sample(nage*lage,n,replace=FALSE,prob=NULL) #adjust to n num
 res <- generate_pop(1000)
+
+ggplot2::ggplot(res)+  geom_point(aes(tt, len))
+
+ggplot2::ggplot(res, aes(tt, len))+geom_point()
+# feat expected
+## growthtype = c("list of major species with given params from fishbase or something")
+## curvetype = c("vb", "logistic", "qVB") this allows indeterminate growth
+
+# min age et max age ? like salmonids
+
+#
