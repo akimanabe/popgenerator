@@ -17,6 +17,7 @@
 age <- function(n,mean,sd,roundage=FALSE){
 
   tempage <- abs(rnorm(n,mean,sd))
+  tempage <- tempage[order(tempage)]
 
   if(roundage==TRUE){
     return(ceiling(tempage))
