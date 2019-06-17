@@ -49,7 +49,7 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   }
 
-  popdata <- newdata[sample(nrow(newdata),n),]%>%
+  popdata <- newdata[sample(nrow(newdata),n),]%>% #n以上のデータが生成される場合サンプルしてn個体を抽出調整
     dplyr::arrange(.,tt)
 
   return(popdata)
@@ -75,3 +75,5 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
 #if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
 #if(type=="sardine92"){par<-c(220,0.649,-1.226)} # Norimoto (2003) Fisheries Science. 69:745-754.
+
+
