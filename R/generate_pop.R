@@ -25,17 +25,20 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   # temporary parameters - for imaginary sardine "iwashi sample"
 
-  tt <- age(n=nage,mean=3,sd=1,roundage) #iwashi sample #roundage gives integer age
 
-  par <- c(300,0.6,0) #iwashi sample
 
-  if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
-  if(type=="sardine92"){par<-c(220,0.649,-1.226)} # Morimoto (2003) Fisheries Science. 69:745-754.
+#  par <- c(300,0.6,0) #iwashi sample
+
+  if(type=="sardine")  {par <- c(250,  0.340, -1.53, 3, 1)}  # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
+  if(type=="sardine92"){par <- c(220,  0.649, -1.226,2, 1)} # Morimoto (2003) Fisheries Science. 69:745-754.
+  if(type=="flounder") {par <- c(358,  0.357, -0.15, 3, 2) }  # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
+  if(type=="mackerel") {par <- c(524,  0.19,  -1.61, 4, 1)}  # Lorenzo and Pajuelo 2010 South African J. Mar. Sci 17(1)
+  if(type=="tuna")     {par <- c(2570, 0.2,    0.83, 4, 10)}  # Secor et al. (2008) SCRS Growth of Atlantic bluefin tuna: direct age estimates
+
+  tt <- age(n=nage,mean=par[4],sd=par[5],roundage) #roundage=TRUE gives integer age
 
   vb <- function(par,tt){
-
     par[1]*(1-exp(-par[2]*(tt-par[3])))
-
   }
 
   basedata <- data.frame(tt=tt,len=vb(par,tt))
@@ -49,31 +52,15 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   }
 
-  popdata <- newdata[sample(nrow(newdata),n),]%>% #n以上のデータが生成される場合サンプルしてn個体を抽出調整
+  popdata <- newdata[sample(nrow(newdata),n),]%>%
     dplyr::arrange(.,tt)
 
   return(popdata)
+  grapher <-
+  ggplot2::ggplot(popdata)+
+    geom_point(aes(tt,len))+
+    xlim(0,1.2*round(max(popdata$tt)))+
+    ylim(0,1.2*round(max(popdata$len)))
 
-
+ return(list(popdata,grapher))
 }
-
-#age <- ceiling(sqrt(n))
-#lage <- ceiling(n/nage)
-#totnum <- sample(nage*lage,n,replace=FALSE,prob=NULL) #adjust to n num
-#res <- generate_pop(1000)
-#ggplot2::ggplot(res)+  geom_point(aes(tt, len))+
-#  xlim(0,round(max(1.2*res$tt)))+
-#  ylim(0,round(max(1.2*res$len)))
-
-# feat expected
-## growthtype = c("list of major species with given params from fishbase or something")
-## curvetype = c("vb", "logistic", "qVB") this allows indeterminate growth
-
-# min age et max age ? like salmonids
-
-#
-
-#if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
-#if(type=="sardine92"){par<-c(220,0.649,-1.226)} # Norimoto (2003) Fisheries Science. 69:745-754.
-
-
