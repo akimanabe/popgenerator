@@ -1,23 +1,45 @@
-age_pois <- function(n,lambda){
+age_poison <- function(n,lambda){
 
-  rpois(n, lambda) + 1
-
-}
-
-age_norm <- function(n,mean,sd){
-
-  abs(rnorm(n,mean,sd))
+  tempage <- rpois(n, lambda) + 1
+  return(tempage)
 
 }
 
-age_lnorm <- function(n,mean=0,sd=1){
+age_normal <- function(n,mean,sd,roundage=FALSE){
 
-  rlnorm(n,mean,sd)
+  tempage <- abs(rnorm(n,mean,sd))
+  tempage <- tempage[order(tempage)]
+
+  if(roundage==TRUE){
+    return(ceiling(tempage))
+  }
+  if(roundage==FALSE){
+    return(tempage)
+  }
 
 }
 
-age_unif <- function(n,min,max){
 
-  runif(n,min,max)
+age_lognormal <- function(n,mean=0,sd=1,roundage=FALSE){
 
+  tempage <-   rlnorm(n,mean,sd)
+
+  if(roundage==TRUE){
+    return(ceiling(tempage))
+  }
+  if(roundage==FALSE){
+    return(tempage)
+  }
+}
+
+age_uniform <- function(n,min,max,roundage=FALSE){
+
+  tempage <-   runif(n,min,max)
+
+  if(roundage==TRUE){
+    return(ceiling(tempage))
+  }
+  if(roundage==FALSE){
+    return(tempage)
+  }
 }
