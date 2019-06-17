@@ -13,7 +13,7 @@
 
 
 
-generate_pop <- function(n,type="sardine"){
+generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   # nから年齢×年齢別体長へ割り振り
   # 基本的には年齢と年齢別体長は同じくらいの量
@@ -24,10 +24,9 @@ generate_pop <- function(n,type="sardine"){
   # totnum <- sample(nage*lage,n,replace=FALSE,prob=NULL) #adjust to n num
 
   # temporary parameters - for imaginary sardine "iwashi sample"
-  # In the future growthtype = c("sardine", "rockfish", "mackerel", "grouper", "anchovy", "manual")
-  # where "manual" allows user to input pars
 
-  tt <- age(n=nage,mean=3,sd=1,roundage=FALSE) #iwashi sample
+  tt <- age(n=nage,mean=3,sd=1,roundage) #iwashi sample #roundage gives integer age
+
   par <- c(300,0.6,0) #iwashi sample
 
   if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
@@ -45,7 +44,7 @@ generate_pop <- function(n,type="sardine"){
 
   for(i in 1:length(basedata[,1])){
 
-      tempdata <- data.frame(tt= rep(tt[i],lage),len=rnorm(n=lage,mean=basedata$len[i],sd=basedata$tt[i]*10))
+      tempdata <- data.frame(tt= rep(tt[i],lage),len=rnorm(n=lage,mean=basedata$len[i],sd=basedata$tt[i]*5))
       newdata <- rbind(newdata,tempdata)
 
   }
