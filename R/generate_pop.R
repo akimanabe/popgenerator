@@ -71,3 +71,15 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
  #return(list(popdata,grapher))
 }
+
+
+#data with limited proportion of "aged" population
+set.seed(10)
+popdata <- generate_pop(1000,type="flounder",roundage=TRUE)
+
+aged <- dplyr::sample_n(popdata,200)
+disaged <- dplyr::sample_n(popdata,800)
+
+aged <- data.frame(tt = aged$tt,len = round(aged$len))
+disaged <- data.frame(tt = rep(NA,length(disaged$tt)),len=round(disaged$len))
+
