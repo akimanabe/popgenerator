@@ -4,14 +4,25 @@
 \alias{generate_pop}
 \title{Generates an imaginary population}
 \usage{
-generate_pop(n)
+generate_pop(n, type = "sardine", roundage = FALSE)
 }
 \arguments{
-\item{n}{integer}
+\item{n}{Number of samples to be generated}
+
+\item{type}{Fish growth type to provide specific growth parameters for von Bertalanffy function. Type can be selected from "sardine", "sardine92", "flounder", "mackerel", "tuna", and "manual". If it is 'manual' parameter needs to be input. If it is 'NULL' type "sardine" is employed.}
+
+\item{roundage}{Rounds the age to integer if 'TRUE'. Default is set as 'FALSE' which returns ages with dicimals.}
 }
 \value{
 data frame
 }
 \description{
 Generates an imaginary population
+}
+\details{
+Fishtype can be selected from "sardine", "flounder", "mackerel", and "tuna". When type = "manual", then VBGF parameters need to be input manually as a vector of c(Linf, K, t0).
+"sardine" consists of short lived organism with small body size. This species exhibit indeterminate growth with inflexion point of growth around 2 years old.
+}
+\references{
+Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 }
