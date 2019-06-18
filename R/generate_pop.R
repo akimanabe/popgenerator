@@ -2,10 +2,16 @@
 
 #' Generates an imaginary population
 #'
-#' @param n integer
+#' @param n Number of samples to be generated
+#' @param type Fish growth type to provide specific growth parameters for von Bertalanffy function. Type can be selected from "sardine", "sardine92", "flounder", "mackerel", "tuna", and "manual". If it is 'manual' parameter needs to be input. If it is 'NULL' type "sardine" is employed.
+#' @param roundage Rounds the age to integer if 'TRUE'. Default is set as 'FALSE' which returns ages with dicimals.
 #'
 #' @return data frame
 #' @export
+#' @details Fishtype can be selected from "sardine", "flounder", "mackerel", and "tuna". When type = "manual", then VBGF parameters need to be input manually as a vector of c(Linf, K, t0).
+#' "sardine" consists of short lived organism with small body size. This species exhibit indeterminate growth with inflexion point of growth around 2 years old.
+#'
+#' @references Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 #'
 #' @examples
 
@@ -25,17 +31,20 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   # temporary parameters - for imaginary sardine "iwashi sample"
 
-  tt <- age(n=nage,mean=3,sd=1,roundage) #iwashi sample #roundage gives integer age
 
-  par <- c(300,0.6,0) #iwashi sample
 
-  if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
-  if(type=="sardine92"){par<-c(220,0.649,-1.226)} # Morimoto (2003) Fisheries Science. 69:745-754.
+#  par <- c(300,0.6,0) #iwashi sample
+
+  if(type=="sardine")  {par <- c(250,  0.340, -1.53, 3, 1)}  # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
+  if(type=="sardine92"){par <- c(220,  0.649, -1.226,2, 1)} # Morimoto (2003) Fisheries Science. 69:745-754.
+  if(type=="flounder") {par <- c(358,  0.357, -0.15, 3, 2)}  # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
+  if(type=="mackerel") {par <- c(524,  0.19,  -1.61, 4, 2)}  # Lorenzo and Pajuelo 2010 South African J. Mar. Sci 17(1)
+  if(type=="tuna")     {par <- c(2570, 0.2,    0.83, 6, 4)}  # Secor et al. (2008) SCRS Growth of Atlantic bluefin tuna: direct age estimates
+
+  tt <- age(n=nage,mean=par[4],sd=par[5],roundage) #roundage=TRUE gives integer age
 
   vb <- function(par,tt){
-
     par[1]*(1-exp(-par[2]*(tt-par[3])))
-
   }
 
   basedata <- data.frame(tt=tt,len=vb(par,tt))
@@ -44,7 +53,8 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 
   for(i in 1:length(basedata[,1])){
 
-      tempdata <- data.frame(tt= rep(tt[i],lage),len=rnorm(n=lage,mean=basedata$len[i],sd=basedata$tt[i]*5))
+      #tempdata <- data.frame(tt= rep(tt[i],lage),len=rnorm(n=lage,mean=basedata$len[i],sd=basedata$tt[i]*5))
+      tempdata <- data.frame(tt= rep(tt[i],lage),len=rgamma(n=lage,shape=basedata$len[i],rate=1))
       newdata <- rbind(newdata,tempdata)
 
   }
@@ -53,25 +63,11 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
     dplyr::arrange(.,tt)
 
   return(popdata)
+  grapher <-
+  ggplot2::ggplot(popdata)+
+    geom_point(aes(tt,len))+
+    xlim(0,1.2*round(max(popdata$tt)))+
+    ylim(0,1.2*round(max(popdata$len)))
 
-
+ #return(list(popdata,grapher))
 }
-
-#age <- ceiling(sqrt(n))
-#lage <- ceiling(n/nage)
-#totnum <- sample(nage*lage,n,replace=FALSE,prob=NULL) #adjust to n num
-#res <- generate_pop(1000)
-#ggplot2::ggplot(res)+  geom_point(aes(tt, len))+
-#  xlim(0,round(max(1.2*res$tt)))+
-#  ylim(0,round(max(1.2*res$len)))
-
-# feat expected
-## growthtype = c("list of major species with given params from fishbase or something")
-## curvetype = c("vb", "logistic", "qVB") this allows indeterminate growth
-
-# min age et max age ? like salmonids
-
-#
-
-#if(type=="sardine"){par <- c(250, 0.340,-1.53)} # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
-#if(type=="sardine92"){par<-c(220,0.649,-1.226)} # Norimoto (2003) Fisheries Science. 69:745-754.
