@@ -14,6 +14,13 @@
 #' @references Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 #'
 #' @examples
+#' library(ggplo2)
+#' imac <- generate_pop(1000, type="mackerel")
+#' g <- ggplot(imac,aex(x=tt,t=len))
+#' graph <- g +
+#'          geom_point()+
+#'          xlab("Age (years))+
+#'          ylab("Body length (mm))
 
 
 
