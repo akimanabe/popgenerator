@@ -22,12 +22,6 @@ generate_pop <- function(n,p,roundage=FALSE){
   nage <- ceiling(sqrt(n))
   nlen <- ceiling(n/nage)
 
-  # if(type=="sardine")  {par <- c(250,  0.340, -1.53, 3, 1)}  # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
-  # if(type=="sardine92"){par <- c(220,  0.649, -1.226,2, 1)} # Morimoto (2003) Fisheries Science. 69:745-754.
-  # if(type=="flounder") {par <- c(358,  0.357, -0.15, 3, 2)}  # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
-  # if(type=="mackerel") {par <- c(524,  0.19,  -1.61, 4, 2)}  # Lorenzo and Pajuelo 2010 South African J. Mar. Sci 17(1)
-  # if(type=="tuna")     {par <- c(2570, 0.2,    0.83, 6, 4)}  # Secor et al. (2008) SCRS Growth of Atlantic bluefin tuna: direct age estimates
-
   tt <- age(n=nage,mean=p[4],sd=p[5],roundage) #roundage=TRUE gives integer age
 
   vb <- function(p,tt){
@@ -54,7 +48,7 @@ generate_pop <- function(n,p,roundage=FALSE){
 
 
 
-#' Title flounder data
+#' Generate flounder data
 #'
 #' @param n sample size
 #' @param seed seed, initially 41
@@ -70,7 +64,45 @@ generate_pop <- function(n,p,roundage=FALSE){
 
 flounder <- function(n,seed=41,roundage=FALSE){
    set.seed(seed)
-   pars <- c(358,  0.357, -0.15, 4, 2)
-  floundata <- generate_pop(n,pars,roundage)
-  return(floundata)
- }
+   pars <- c(358,  0.357, -0.15, 4, 2) # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
+  dat <- generate_pop(n,pars,roundage)
+  return(dat)
+}
+
+#' Generate mackerel data
+#'
+#' @param n sample size
+#' @param seed seed, initally 41
+#' @param roundage either return rounded age or not
+#'
+#' @return data.frame
+#' @export
+#'
+#' @examples
+#' mackerel(1000,seed=1, roundage=TRUE)
+#'
+mackerel <- function(n,seed=41,roundage=FALSE){
+  set.seed(seed)
+  pars <- c(524,  0.19,  -1.61, 4, 2) # Lorenzo and Pajuelo 2010 South African J. Mar. Sci 17(1)
+  dat <- generate_pop(n,pars,roundage)
+  return(dat)
+}
+
+#' Generate sardine data
+#'
+#' @param n sample size
+#' @param seed seed, initially 41
+#' @param roundage either retrun rounded age or not
+#'
+#' @return data frame
+#' @export
+#'
+#' @examples
+#' sardine(1000, seed=1, roundage=FALSE)
+#'
+sardine <- function(n,seed=41,roundage=FALSE){
+  set.seed(seed)
+  pars <- c(250,  0.340, -1.53, 3, 1) # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
+  dat <- generate_pop(n,pars,roundage)
+  return(dat)
+}
