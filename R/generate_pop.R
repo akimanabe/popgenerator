@@ -14,7 +14,7 @@
 #' @references Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 #'
 #' @examples
-#' library(ggplo2)
+#' library(ggplot2)
 #' imac <- generate_pop(1000, type="mackerel")
 #' g <- ggplot(imac,aex(x=tt,t=len))
 #' graph <- g +
@@ -26,7 +26,7 @@
 
 
 
-generate_pop <- function(n,type="sardine",roundage=FALSE){
+generate_pop <- function(n,par=NULL, type="sardine",roundage=FALSE){
 
   # nから年齢×年齢別体長へ割り振り
   # 基本的には年齢と年齢別体長は同じくらいの量
@@ -80,13 +80,13 @@ generate_pop <- function(n,type="sardine",roundage=FALSE){
 }
 
 
-#data with limited proportion of "aged" population
-set.seed(10)
-popdata <- generate_pop(1000,type="flounder",roundage=TRUE)
-
-aged <- dplyr::sample_n(popdata,200)
-disaged <- dplyr::sample_n(popdata,800)
-
-aged <- data.frame(tt = aged$tt,len = round(aged$len))
-disaged <- data.frame(tt = rep(NA,length(disaged$tt)),len=round(disaged$len))
-
+# #data with limited proportion of "aged" population
+# set.seed(10)
+# popdata <- generate_pop(1000,type="flounder",roundage=TRUE)
+#
+# aged <- dplyr::sample_n(popdata,200)
+# disaged <- dplyr::sample_n(popdata,800)
+#
+# aged <- data.frame(tt = aged$tt,len = round(aged$len))
+# disaged <- data.frame(tt = rep(NA,length(disaged$tt)),len=round(disaged$len))
+#

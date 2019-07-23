@@ -23,6 +23,15 @@ Generates an imaginary population
 Fishtype can be selected from "sardine", "flounder", "mackerel", and "tuna". When type = "manual", then VBGF parameters need to be input manually as a vector of c(Linf, K, t0).
 "sardine" consists of short lived organism with small body size. This species exhibit indeterminate growth with inflexion point of growth around 2 years old.
 }
+\examples{
+library(ggplo2)
+imac <- generate_pop(1000, type="mackerel")
+g <- ggplot(imac,aex(x=tt,t=len))
+graph <- g +
+         geom_point()+
+         xlab("Age (years))+
+         ylab("Body length (mm))
+}
 \references{
 Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 }
