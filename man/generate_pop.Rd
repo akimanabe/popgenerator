@@ -4,12 +4,12 @@
 \alias{generate_pop}
 \title{Generates an imaginary population}
 \usage{
-generate_pop(n, type = "sardine", roundage = FALSE)
+generate_pop(n, p, roundage = FALSE)
 }
 \arguments{
 \item{n}{Number of samples to be generated}
 
-\item{type}{Fish growth type to provide specific growth parameters for von Bertalanffy function. Type can be selected from "sardine", "sardine92", "flounder", "mackerel", "tuna", and "manual". If it is 'manual' parameter needs to be input. If it is 'NULL' type "sardine" is employed.}
+\item{p}{parameters for growth (p[1],p[2],p[3]) and mean_age p[4] and its sd p[5]}
 
 \item{roundage}{Rounds the age to integer if 'TRUE'. Default is set as 'FALSE' which returns ages with dicimals.}
 }
@@ -24,6 +24,7 @@ Fishtype can be selected from "sardine", "flounder", "mackerel", and "tuna". Whe
 "sardine" consists of short lived organism with small body size. This species exhibit indeterminate growth with inflexion point of growth around 2 years old.
 }
 \examples{
+<<<<<<< HEAD
 library(ggplo2)
 imac <- generate_pop(1000, type="mackerel")
 g <- ggplot(imac,aex(x=tt,t=len))
@@ -31,6 +32,11 @@ graph <- g +
          geom_point()+
          xlab("Age (years))+
          ylab("Body length (mm))
+=======
+
+generate_pop(1000,c(524,  0.19,  -1.61, 4, 2),TRUE)
+
+>>>>>>> feat_fishtype
 }
 \references{
 Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
