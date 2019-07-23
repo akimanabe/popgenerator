@@ -3,6 +3,8 @@
 export(age)
 export(flounder)
 export(generate_pop)
+export(mackerel)
+export(sardine)
 importFrom(magrittr,"%>%")
 importFrom(stats,rgamma)
 importFrom(stats,rnorm)

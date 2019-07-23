@@ -24,19 +24,9 @@ Fishtype can be selected from "sardine", "flounder", "mackerel", and "tuna". Whe
 "sardine" consists of short lived organism with small body size. This species exhibit indeterminate growth with inflexion point of growth around 2 years old.
 }
 \examples{
-<<<<<<< HEAD
-library(ggplo2)
-imac <- generate_pop(1000, type="mackerel")
-g <- ggplot(imac,aex(x=tt,t=len))
-graph <- g +
-         geom_point()+
-         xlab("Age (years))+
-         ylab("Body length (mm))
-=======
 
-generate_pop(1000,c(524,  0.19,  -1.61, 4, 2),TRUE)
+generate_pop(1000,p=c(358,  0.357, -0.15, 4, 2), roundage=FALSE)
 
->>>>>>> feat_fishtype
 }
 \references{
 Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.

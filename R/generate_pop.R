@@ -15,6 +15,9 @@
 #' @references Manabe, A., et al. (2018). A novel ontogenetic function incorporating energy allocation. PLoS ONE. e######.
 #'
 #' @examples
+#'
+#' generate_pop(1000,p=c(358,  0.357, -0.15, 4, 2), roundage=FALSE)
+#'
 
 
 generate_pop <- function(n,p,roundage=FALSE){

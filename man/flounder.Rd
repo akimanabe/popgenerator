@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_pop.R
 \name{flounder}
 \alias{flounder}
-\title{Title flounder data}
+\title{Generate flounder data}
 \usage{
 flounder(n, seed = 41, roundage = FALSE)
 }
@@ -17,7 +17,7 @@ flounder(n, seed = 41, roundage = FALSE)
 data.frame
 }
 \description{
-Title flounder data
+Generate flounder data
 }
 \examples{
 
