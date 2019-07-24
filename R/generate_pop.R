@@ -25,27 +25,23 @@ generate_pop <- function(n,p,roundage=FALSE){
   nage <- ceiling(sqrt(n))
   nlen <- ceiling(n/nage)
 
-  tt <- age(n=nage,mean=p[4],sd=p[5],roundage) #roundage=TRUE gives integer age
+  age <- randomage(n=nage,mean=p[4],sd=p[5]) #roundage=TRUE gives integer age
 
-  vb <- function(p,tt){
-    p[1]*(1-exp(-p[2]*(tt-p[3])))
+  vb <- function(p,age){
+    p[1]*(1-exp(-p[2]*(age-p[3])))
   }
 
-  basedata <- data.frame(tt=tt,len=vb(p,tt))
+  Ls <- purrr::map_dfc(vb(p,age), function(x){rgamma(n=nlen, shape=x, rate=0.8)}) %>%
+    unlist(.) %>%
+    unname(.)
 
-  newdata<-data.frame(NULL,NULL)
+  ages <- purrr::map(age, function(x){rep(x, nlen)})%>%
+    unlist(.) %>%
+    unname(.)
 
-  for(i in 1:length(basedata[,1])){
-    tempdata <- data.frame(tt= rep(tt[i],nlen),len=rgamma(n=nlen,shape=basedata$len[i],rate=0.8))
-     # tempdata <- data.frame(tt= rep(tt[i],nlen),len=rgamma(n=nlen,shape=basedata$len[i],rate=0.9))
-      newdata <- rbind(newdata,tempdata)
+  dat <- tibble::tibble(age=ages, L=Ls)
 
-  }
-
-  popdata <- newdata[sample(nrow(newdata),n),]%>%
-    dplyr::arrange(.,tt)
-
-  return(popdata)
+  return(dat)
 
 }
 
@@ -66,10 +62,15 @@ generate_pop <- function(n,p,roundage=FALSE){
 #'
 
 flounder <- function(n,seed=41,roundage=FALSE){
-   set.seed(seed)
-   pars <- c(358,  0.357, -0.15, 4, 2) # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
+
+  set.seed(seed)
+
+  pars <- c(358,  0.357, -0.15, 4, 2) # Manabe et al. (2018) PLoS ONE Fig 1 willowy flounder M
+
   dat <- generate_pop(n,pars,roundage)
+
   return(dat)
+
 }
 
 #' Generate mackerel data
@@ -85,10 +86,15 @@ flounder <- function(n,seed=41,roundage=FALSE){
 #' mackerel(1000,seed=1, roundage=TRUE)
 #'
 mackerel <- function(n,seed=41,roundage=FALSE){
+
   set.seed(seed)
+
   pars <- c(524,  0.19,  -1.61, 4, 2) # Lorenzo and Pajuelo 2010 South African J. Mar. Sci 17(1)
+
   dat <- generate_pop(n,pars,roundage)
+
   return(dat)
+
 }
 
 #' Generate sardine data
@@ -104,8 +110,13 @@ mackerel <- function(n,seed=41,roundage=FALSE){
 #' sardine(1000, seed=1, roundage=FALSE)
 #'
 sardine <- function(n,seed=41,roundage=FALSE){
+
   set.seed(seed)
+
   pars <- c(250,  0.340, -1.53, 3, 1) # Oshimo et al. (2009) Fish. Oceanogr. 18(5):346-358.
+
   dat <- generate_pop(n,pars,roundage)
+
   return(dat)
+
 }
