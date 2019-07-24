@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-#' age(n=100, mean=2, sd=1, roundage=TRUE)
-#' age(n=10, mean=3, sd=1.5)
+#' randomage(n=100, mean=2, sd=1, roundage=TRUE)
+#' randomage(n=10, mean=3, sd=1.5)
 
 randomage <- function(n,mean,sd,roundage=FALSE){
 
